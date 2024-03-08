@@ -4,6 +4,7 @@ import com.andresouza.dscatalog.dto.CategoryDTO;
 import com.andresouza.dscatalog.entities.Category;
 import com.andresouza.dscatalog.servicies.exceptions.ResourceNotFoundException;
 import com.andresouza.dscatalog.repositories.CategoryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,4 +46,18 @@ public class CategoryService {
 
     }
 
+    @Transactional
+    public CategoryDTO update(Long id, CategoryDTO dto) {
+        try {
+            Category category = repository.getReferenceById(id);
+            if(dto.getName() != null) category.setName(dto.getName());
+
+            return  new CategoryDTO(category);
+
+        }catch (EntityNotFoundException e ){
+            throw  new ResourceNotFoundException("Not found");
+        }
+
+
+    }
 }
