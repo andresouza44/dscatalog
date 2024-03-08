@@ -2,12 +2,14 @@ package com.andresouza.dscatalog.servicies;
 
 import com.andresouza.dscatalog.dto.CategoryDTO;
 import com.andresouza.dscatalog.entities.Category;
+import com.andresouza.dscatalog.servicies.exceptions.DataBaseException;
 import com.andresouza.dscatalog.servicies.exceptions.ResourceNotFoundException;
 import com.andresouza.dscatalog.repositories.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -61,6 +63,7 @@ public class CategoryService {
 
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void  deleteById (Long id){
        if (!repository.existsById(id)){
            throw new ResourceNotFoundException("Resource not found");
@@ -69,7 +72,7 @@ public class CategoryService {
 
             repository.deleteById(id);
         } catch (DataIntegrityViolationException e){
-            throw new DataIntegrityViolationException("Data integrity violation");
+            throw new DataBaseException("Data integrity violation");
         }
     }
 }
