@@ -9,12 +9,9 @@ public class CategoryDTO {
     private Long id;
     private String name;
 
-  //  private List<ProductDTO> products = new ArrayList<>();
-
     public  CategoryDTO (){
 
     }
-
 
     public CategoryDTO(Long id, String name) {
         this.id = id;
@@ -25,12 +22,7 @@ public class CategoryDTO {
         id = entity.getId();
         name = entity.getName();
 
-  //   entity.getProducts().forEach(product -> products.add(new ProductDTO(product)));
-
-
     }
-
-
 
     public Long getId() {
         return id;
@@ -48,10 +40,6 @@ public class CategoryDTO {
         this.name = name;
     }
 
- /*   public List<ProductDTO> getProducts() {
-        return products;
-    }
- */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

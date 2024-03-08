@@ -7,6 +7,8 @@ import com.andresouza.dscatalog.entities.Product;
 import com.andresouza.dscatalog.repositories.ProductRepository;
 import com.andresouza.dscatalog.servicies.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +21,9 @@ public class ProductService {
     private ProductRepository repository;
 
     @Transactional(readOnly = true)
-    public List<ProductDTO> findAll (){
-        List<Product> products = repository.findAll();
-
-        return  products.stream().map(product -> new ProductDTO(product)).toList();
+    public Page<ProductDTO> findAll (Pageable pageable){
+        Page<Product> products = repository.findAll(pageable);
+        return  products.map(ProductDTO::new);
 
     }
 

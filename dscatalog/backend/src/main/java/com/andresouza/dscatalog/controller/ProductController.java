@@ -4,6 +4,8 @@ import com.andresouza.dscatalog.dto.CategoryDTO;
 import com.andresouza.dscatalog.dto.ProductDTO;
 import com.andresouza.dscatalog.servicies.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +23,9 @@ public class ProductController {
     private ProductService service;
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> findAll(){
-        List<ProductDTO> dto = service.findAll();
-        return ResponseEntity.ok().body(dto);
+    public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable){
+        Page<ProductDTO> page = service.findAll(pageable);
+        return ResponseEntity.ok().body(page);
 
     }
 
