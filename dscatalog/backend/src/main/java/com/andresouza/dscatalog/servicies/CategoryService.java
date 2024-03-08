@@ -6,6 +6,7 @@ import com.andresouza.dscatalog.servicies.exceptions.ResourceNotFoundException;
 import com.andresouza.dscatalog.repositories.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,6 +59,17 @@ public class CategoryService {
             throw  new ResourceNotFoundException("Not found");
         }
 
+    }
 
+    public void  deleteById (Long id){
+       if (!repository.existsById(id)){
+           throw new ResourceNotFoundException("Resource not found");
+       }
+        try{
+
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException e){
+            throw new DataIntegrityViolationException("Data integrity violation");
+        }
     }
 }
