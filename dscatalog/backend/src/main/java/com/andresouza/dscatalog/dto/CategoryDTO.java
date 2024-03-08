@@ -3,32 +3,34 @@ package com.andresouza.dscatalog.dto;
 import com.andresouza.dscatalog.entities.Category;
 import com.andresouza.dscatalog.entities.Product;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class CategoryDTO {
     private Long id;
     private String name;
 
-    private Set<Product> products = new HashSet<>();
+  //  private List<ProductDTO> products = new ArrayList<>();
 
     public  CategoryDTO (){
 
+    }
+
+
+    public CategoryDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public CategoryDTO(Category entity){
         id = entity.getId();
         name = entity.getName();
 
-        entity.getProducts().stream()
-                .map(product -> products.add(product));
+  //   entity.getProducts().forEach(product -> products.add(new ProductDTO(product)));
+
+
     }
 
-    public CategoryDTO(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+
 
     public Long getId() {
         return id;
@@ -46,10 +48,10 @@ public class CategoryDTO {
         this.name = name;
     }
 
-    public Set<Product> getProducts() {
+ /*   public List<ProductDTO> getProducts() {
         return products;
     }
-
+ */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
