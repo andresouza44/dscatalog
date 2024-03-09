@@ -1,8 +1,6 @@
 package com.andresouza.dscatalog.dto;
 
-import com.andresouza.dscatalog.entities.Category;
 import com.andresouza.dscatalog.entities.Product;
-import jakarta.persistence.Column;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,9 +12,9 @@ public class ProductDTO {
     private Double price;
     private String imgUrl;
 
-  private Set<CategoryDTO> categories = new HashSet<>();
+    private Set<CategoryDTO> categories = new HashSet<>();
 
-    public ProductDTO (){
+    public ProductDTO() {
 
     }
 
@@ -28,13 +26,12 @@ public class ProductDTO {
         this.imgUrl = imgUrl;
     }
 
-    public ProductDTO(String name){
+    public ProductDTO(String name) {
         this.name = name;
     }
 
 
-
-    public ProductDTO(Product entity){
+    public ProductDTO(Product entity) {
         id = entity.getId();
         name = entity.getName();
         description = entity.getDescription();
