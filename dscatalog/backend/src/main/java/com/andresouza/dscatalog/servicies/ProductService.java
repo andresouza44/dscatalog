@@ -99,7 +99,7 @@ public class ProductService {
             repository.deleteById(id);
 
         }catch (DataIntegrityViolationException e){
-            throw  new DataBaseException("Data entity violation");
+            throw new DataBaseException("Data entity violation");
         }
 
 
