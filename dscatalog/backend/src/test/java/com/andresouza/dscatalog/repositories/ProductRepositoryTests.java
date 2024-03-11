@@ -1,9 +1,8 @@
 package com.andresouza.dscatalog.repositories;
 
 import com.andresouza.dscatalog.entities.Product;
-import com.andresouza.dscatalog.tests.factory.ProductFactory;
+import com.andresouza.dscatalog.tests.factory.Factory;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class ProductRepositoryTests {
         existedId = 1L;
         noExistId = 1000L;
         countTotalProducts = 25;
-        product = ProductFactory.createProduct();
+        product = Factory.createProduct();
     }
 
     @Test
@@ -50,7 +49,7 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void findByIdShouldReturnNomEmptyOptionalWhenExistId(){
+    public void findByIdShouldReturnNonEmptyOptionalWhenExistId(){
         Optional<Product> optional = repository.findById(existedId);
 
         Assertions.assertTrue(optional.isPresent());
