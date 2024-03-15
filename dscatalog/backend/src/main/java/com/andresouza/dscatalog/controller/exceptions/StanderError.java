@@ -1,4 +1,4 @@
-package com.andresouza.dscatalog.dto;
+package com.andresouza.dscatalog.controller.exceptions;
 
 import jakarta.persistence.Column;
 
@@ -11,6 +11,13 @@ public class StanderError {
     private  String path;
 
     public StanderError(){
+    }
+
+    public StanderError(Instant timestamp, Integer status, String error, String path) {
+        this.timestamp = timestamp;
+        this.status = status;
+        this.error = error;
+        this.path = path;
     }
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIMEZONE")
