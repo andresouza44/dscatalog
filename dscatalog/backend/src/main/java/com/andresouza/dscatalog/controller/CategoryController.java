@@ -4,6 +4,7 @@ package com.andresouza.dscatalog.controller;
 import com.andresouza.dscatalog.dto.CategoryDTO;
 import com.andresouza.dscatalog.entities.Category;
 import com.andresouza.dscatalog.servicies.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +39,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> insert (@RequestBody CategoryDTO dto){
+    public ResponseEntity<CategoryDTO> insert (@Valid  @RequestBody CategoryDTO dto){
         CategoryDTO categoryDto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
                 path("/{id}").buildAndExpand(categoryDto.getId()).toUri();
@@ -48,7 +49,7 @@ public class CategoryController {
     }
 
     @PutMapping (value = "/{id}")
-    public ResponseEntity<CategoryDTO> update (@PathVariable Long id, @RequestBody CategoryDTO dto){
+    public ResponseEntity<CategoryDTO> update (@PathVariable Long id,@Valid @RequestBody CategoryDTO dto){
         dto = service.update(id, dto);
 
         return ResponseEntity.ok().body(dto);

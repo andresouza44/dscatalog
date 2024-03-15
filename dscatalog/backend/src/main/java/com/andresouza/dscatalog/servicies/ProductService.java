@@ -54,8 +54,10 @@ public class ProductService {
         product.setPrice(dto.getPrice());
         product.setImgUrl(dto.getImgUrl());
 
-        dto.getCategories().forEach(categoryDTO -> product
-                .getCategories().add(new Category(categoryDTO.getId())));
+        dto.getCategories().forEach(categoryDTO -> {
+            Category category= categoryRepository.getReferenceById(categoryDTO.getId());
+            product.getCategories().add(category);
+        });
 
         repository.save(product);
 

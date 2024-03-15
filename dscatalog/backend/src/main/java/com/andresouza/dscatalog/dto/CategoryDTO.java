@@ -2,11 +2,14 @@ package com.andresouza.dscatalog.dto;
 
 import com.andresouza.dscatalog.entities.Category;
 import com.andresouza.dscatalog.entities.Product;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.*;
 
 public class CategoryDTO {
     private Long id;
+
+    @NotBlank( message = "O campo não pode estar vazio")
     private String name;
 
     public  CategoryDTO (){

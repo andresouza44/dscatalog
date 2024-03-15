@@ -1,6 +1,7 @@
 package com.andresouza.dscatalog.dto;
 
 import com.andresouza.dscatalog.entities.Product;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +10,8 @@ public class ProductDTO {
     private Long id;
     private String name;
     private String description;
+
+    @PositiveOrZero( message = "Deve ser maior ou igual a zero")
     private Double price;
     private String imgUrl;
 
