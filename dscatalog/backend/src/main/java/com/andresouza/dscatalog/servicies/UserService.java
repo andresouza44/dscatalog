@@ -5,7 +5,7 @@ import com.andresouza.dscatalog.dto.UserInsertDTO;
 import com.andresouza.dscatalog.entities.Role;
 import com.andresouza.dscatalog.entities.User;
 import com.andresouza.dscatalog.repositories.RoleRepository;
-import com.andresouza.dscatalog.repositories.UserRepostitory;
+import com.andresouza.dscatalog.repositories.UserRepository;
 import com.andresouza.dscatalog.servicies.exceptions.DataBaseException;
 import com.andresouza.dscatalog.servicies.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     @Autowired
-    private UserRepostitory repostitory;
+    private UserRepository repostitory;
 
     @Autowired
     private RoleRepository roleRepository;
