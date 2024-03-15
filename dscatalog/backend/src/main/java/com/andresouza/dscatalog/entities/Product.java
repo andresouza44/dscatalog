@@ -21,7 +21,6 @@ public class Product {
     private Double price;
     private String imgUrl;
 
-    //tb_product (name, price, date, description, img_url
 
     @Column (columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant date;
