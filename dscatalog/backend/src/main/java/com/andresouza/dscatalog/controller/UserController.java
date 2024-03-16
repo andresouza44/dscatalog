@@ -2,6 +2,7 @@ package com.andresouza.dscatalog.controller;
 
 import com.andresouza.dscatalog.dto.UserDto;
 import com.andresouza.dscatalog.dto.UserInsertDTO;
+import com.andresouza.dscatalog.dto.UserUpdateDTO;
 import com.andresouza.dscatalog.servicies.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,11 @@ public class UserController {
                 .buildAndExpand(userDto.getId()).toUri();
 
         return ResponseEntity.created(uri).body(userDto);
-
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDto> update (@PathVariable Long id, @Valid @RequestBody UserDto dto){
-        dto = service.update(id, dto);
+    public ResponseEntity<UserDto> update (@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto){
+        UserDto newDto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }
 
