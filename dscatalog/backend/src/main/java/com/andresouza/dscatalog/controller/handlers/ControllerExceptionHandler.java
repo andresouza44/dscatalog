@@ -2,6 +2,7 @@ package com.andresouza.dscatalog.controller.handlers;
 
 import com.andresouza.dscatalog.controller.exceptions.StanderError;
 import com.andresouza.dscatalog.controller.exceptions.ValidationError;
+import com.andresouza.dscatalog.servicies.exceptions.DataBaseException;
 import com.andresouza.dscatalog.servicies.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,7 +33,7 @@ public class ControllerExceptionHandler {
 
     }
 
-    @ExceptionHandler(DataFormatException.class)
+    @ExceptionHandler(DataBaseException.class)
     public ResponseEntity<StanderError> dataBaseException(DataIntegrityViolationException e , HttpServletRequest request){
 
         HttpStatus status = HttpStatus.BAD_REQUEST;

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,7 +31,6 @@ public class CategoryController {
 
     }
 
-
     @GetMapping (value = "/{id}")
     public ResponseEntity<CategoryDTO> findById (@PathVariable Long id){
         CategoryDTO dto = service.findById(id);
@@ -38,6 +38,7 @@ public class CategoryController {
 
     }
 
+    @PreAuthorize("hasAnyRole ('ROLE_ADMIN', 'ROLE_OPERATOR')")
     @PostMapping
     public ResponseEntity<CategoryDTO> insert (@Valid  @RequestBody CategoryDTO dto){
         CategoryDTO categoryDto = service.insert(dto);
@@ -48,6 +49,7 @@ public class CategoryController {
 
     }
 
+    @PreAuthorize("hasAnyRole ('ROLE_ADMIN', 'ROLE_OPERATOR')")
     @PutMapping (value = "/{id}")
     public ResponseEntity<CategoryDTO> update (@PathVariable Long id,@Valid @RequestBody CategoryDTO dto){
         dto = service.update(id, dto);
@@ -56,6 +58,7 @@ public class CategoryController {
 
     }
 
+    @PreAuthorize("hasAnyRole ('ROLE_ADMIN', 'ROLE_OPERATOR')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         service.deleteById(id);
