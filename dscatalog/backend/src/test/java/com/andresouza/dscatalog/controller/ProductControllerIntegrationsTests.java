@@ -3,6 +3,7 @@ package com.andresouza.dscatalog.controller;
 import com.andresouza.dscatalog.dto.ProductDTO;
 import com.andresouza.dscatalog.servicies.ProductService;
 import com.andresouza.dscatalog.tests.factory.Factory;
+import com.andresouza.dscatalog.tests.factory.TokenUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -33,24 +35,36 @@ public class ProductControllerIntegrationsTests {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private TokenUtil tokenUtil;
+
     private Long existId;
     private Long nonExistId;
     private Long countTotalProducts;
 
+    private String username, password, bearerToken;
+
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         existId = 1L;
         nonExistId = 1000L;
         countTotalProducts = 25L;
 
+        username = "maria@gmail.com";
+        password = "123456";
+
+        bearerToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
     }
 
     @Test
+  //  @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     public void updateShouldReturnNotFoundWhenIdDoesNotExist () throws Exception{
         ProductDTO productDTO = Factory.createProductDTO();
         String jsonBody = objectMapper.writeValueAsString(productDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/products/{id}", nonExistId)
+                    .header("Authorization", "Bearer " + bearerToken)
                     .content(jsonBody)
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON))
@@ -58,6 +72,7 @@ public class ProductControllerIntegrationsTests {
     }
 
     @Test
+   // @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void updateShouldReturnProductDtoWhenIdExist () throws Exception{
 
         ProductDTO productDTO = Factory.createProductDTO();
@@ -67,6 +82,7 @@ public class ProductControllerIntegrationsTests {
         String expectedDescription = productDTO.getDescription();
 
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.put("/products/{id}", existId)
+                .header("Authorization", "Bearer " + bearerToken)
                 .content(jsonBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
