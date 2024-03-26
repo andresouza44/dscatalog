@@ -4,7 +4,9 @@ import com.andresouza.dscatalog.entities.Product;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ProductDTO {
@@ -17,6 +19,8 @@ public class ProductDTO {
 
     private Double price;
     private String imgUrl;
+
+    private List<Long> categoryId = new ArrayList<>();
 
     private Set<CategoryDTO> categories = new HashSet<>();
 
@@ -44,10 +48,16 @@ public class ProductDTO {
         price = entity.getPrice();
         imgUrl = entity.getImgUrl();
 
+     //   entity.getCategories().forEach(category -> categoryId.add(category.getId()));
+
+        // retirei a entidade categoria para ficar igual ao do curso
         entity.getCategories().forEach(category -> categories.add(new CategoryDTO(category)));
     }
 
-
+   /* public List<Long> getCategoryId() {
+        return categoryId;
+    }
+*/
     public Long getId() {
         return id;
     }
@@ -87,6 +97,7 @@ public class ProductDTO {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+
 
     public Set<CategoryDTO> getCategories() {
         return categories;

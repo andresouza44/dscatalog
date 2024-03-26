@@ -23,8 +23,14 @@ public class CategoryService {
     @Autowired
     private CategoryRepository repository;
 
+    @Transactional
+    public List<CategoryDTO> findAll(){
+        List<Category> list = repository.findAll();
+        return list.stream().map(cat -> new CategoryDTO(cat)).toList();
+    }
+
     @Transactional(readOnly = true)
-    public Page<CategoryDTO> findAll (Pageable pageable){
+    public Page<CategoryDTO> findAllPaged (Pageable pageable){
         Page<Category> categories = repository.findAll(pageable);
         return categories.map(category ->new CategoryDTO(category));
 

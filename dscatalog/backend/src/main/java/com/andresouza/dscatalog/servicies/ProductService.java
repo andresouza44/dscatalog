@@ -4,6 +4,7 @@ import com.andresouza.dscatalog.dto.CategoryDTO;
 import com.andresouza.dscatalog.dto.ProductDTO;
 import com.andresouza.dscatalog.entities.Category;
 import com.andresouza.dscatalog.entities.Product;
+import com.andresouza.dscatalog.projection.ProductProjection;
 import com.andresouza.dscatalog.repositories.CategoryRepository;
 import com.andresouza.dscatalog.repositories.ProductRepository;
 import com.andresouza.dscatalog.servicies.exceptions.DataBaseException;
@@ -12,12 +13,15 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -37,6 +41,24 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
+    public Page<ProductDTO> searchAllPageable(String name, String categoryId,Pageable pageable){
+
+        List<Long> categoryIds = Arrays.asList();
+        if (!categoryId.isEmpty()){
+            List<String> list = Arrays.asList(categoryId.split(","));
+            categoryIds = list.stream().map(e -> Long.parseLong(e)).toList();
+        }
+
+        Page<ProductProjection> page = repository.searchProducts(categoryIds,name, pageable);
+        List<Long> productId = page.map(e -> e.getId()).toList();
+
+        List<Product> entity = repository.searchProductsWithCategories(productId);
+        List<ProductDTO> dtos = entity.stream().map(e -> new ProductDTO(e)).toList();
+
+        return new PageImpl<>(dtos,page.getPageable(),page.getTotalElements());
+}
+
+    @Transactional(readOnly = true)
     public ProductDTO findById (Long id){
         Product product = repository.findById(id)
                 .orElseThrow( () -> new ResourceNotFoundException("Resource not found with id " + id));
@@ -54,11 +76,12 @@ public class ProductService {
         product.setPrice(dto.getPrice());
         product.setImgUrl(dto.getImgUrl());
 
-        dto.getCategories().forEach(categoryDTO -> {
+        // retirei a entidade categoria para ficar igual ao do curso
+      /*  dto.getCategories().forEach(categoryDTO -> {
             Category category= categoryRepository.getReferenceById(categoryDTO.getId());
             product.getCategories().add(category);
         });
-
+*/
         repository.save(product);
 
         return new ProductDTO(product);
@@ -75,11 +98,12 @@ public class ProductService {
             if (dto.getImgUrl() != null) entity.setImgUrl(dto.getImgUrl());
             if (dto.getName() != null) entity.setName(dto.getName());
 
-            if (!dto.getCategories().isEmpty()) {
+            // retirei a entidade categoria para ficar igual ao do curso
+          /*  if (!dto.getCategories().isEmpty()) {
                 entity.getCategories().clear();
                 dto.getCategories().forEach(categoryDTO ->
                                 entity.getCategories().add(new Category(categoryDTO.getId())));
-            }
+            }*/
             repository.save(entity);
             return new ProductDTO(entity);
 
