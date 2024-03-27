@@ -4,11 +4,13 @@ import com.andresouza.dscatalog.dto.CategoryDTO;
 import com.andresouza.dscatalog.dto.ProductDTO;
 import com.andresouza.dscatalog.entities.Category;
 import com.andresouza.dscatalog.entities.Product;
+import com.andresouza.dscatalog.projection.IdProjection;
 import com.andresouza.dscatalog.projection.ProductProjection;
 import com.andresouza.dscatalog.repositories.CategoryRepository;
 import com.andresouza.dscatalog.repositories.ProductRepository;
 import com.andresouza.dscatalog.servicies.exceptions.DataBaseException;
 import com.andresouza.dscatalog.servicies.exceptions.ResourceNotFoundException;
+import com.andresouza.dscatalog.utils.Util;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -23,6 +25,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.andresouza.dscatalog.utils.Util.replace;
 
 @Service
 public class ProductService {
@@ -43,17 +47,19 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Page<ProductDTO> searchAllPageable(String name, String categoryId,Pageable pageable){
 
-        List<Long> categoryIds = Arrays.asList();
+        List<Long> categoryIds = List.of();
         if (!categoryId.isEmpty()){
             List<String> list = Arrays.asList(categoryId.split(","));
-            categoryIds = list.stream().map(e -> Long.parseLong(e)).toList();
+            categoryIds = list.stream().map(Long::parseLong).toList();
         }
 
         Page<ProductProjection> page = repository.searchProducts(categoryIds,name, pageable);
-        List<Long> productId = page.map(e -> e.getId()).toList();
+        List<Long> productId = page.map(IdProjection::getId).toList();
 
         List<Product> entity = repository.searchProductsWithCategories(productId);
-        List<ProductDTO> dtos = entity.stream().map(e -> new ProductDTO(e)).toList();
+        entity = (List<Product>) Util.replace(page.getContent(),entity);
+
+        List<ProductDTO> dtos = entity.stream().map(ProductDTO::new).toList();
 
         return new PageImpl<>(dtos,page.getPageable(),page.getTotalElements());
 }

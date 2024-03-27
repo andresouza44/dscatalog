@@ -1,5 +1,6 @@
 package com.andresouza.dscatalog.entities;
 
+import com.andresouza.dscatalog.projection.IdProjection;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -9,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_product")
-public class Product {
+public class Product implements IdProjection<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +45,7 @@ public class Product {
         this.date = moment;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
