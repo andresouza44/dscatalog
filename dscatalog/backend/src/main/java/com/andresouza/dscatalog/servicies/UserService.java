@@ -38,6 +38,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AuthService authService;
+
     @Transactional(readOnly = true)
     public Page<UserDto> findAll(Pageable pageable) {
         Page<User> list = repostitory.findAll(pageable);
@@ -117,6 +120,13 @@ public class UserService implements UserDetailsService {
             user.getRoles().add(new Role(e.getRoleId(), e.getAuthority()));
               });
         return user;
+    }
+
+    @Transactional(readOnly = true)
+    public UserDto findMe() {
+        User user = authService.authenticated();
+        return new UserDto(user);
+
     }
 }
 
