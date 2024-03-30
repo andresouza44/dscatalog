@@ -1,14 +1,13 @@
 package com.andresouza.dscatalog.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 
 import java.time.Instant;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_password_recovery")
-public class PasswordRecovery {
+public class PasswordRecover {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +22,11 @@ public class PasswordRecovery {
     @Column(nullable = false)
     private Instant expiration;
 
-    public PasswordRecovery(){
+    public PasswordRecover(){
 
     }
 
-    public PasswordRecovery(Long id, String token, String email, Instant expiration) {
+    public PasswordRecover(Long id, String token, String email, Instant expiration) {
         this.id = id;
         this.token = token;
         this.email = email;
@@ -71,7 +70,7 @@ public class PasswordRecovery {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PasswordRecovery that = (PasswordRecovery) o;
+        PasswordRecover that = (PasswordRecover) o;
 
         return Objects.equals(id, that.id);
     }
