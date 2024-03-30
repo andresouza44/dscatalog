@@ -3,11 +3,13 @@ package com.andresouza.dscatalog.controller.handlers;
 import com.andresouza.dscatalog.controller.exceptions.StanderError;
 import com.andresouza.dscatalog.controller.exceptions.ValidationError;
 import com.andresouza.dscatalog.servicies.exceptions.DataBaseException;
+import com.andresouza.dscatalog.servicies.exceptions.EmailException;
 import com.andresouza.dscatalog.servicies.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -62,6 +64,19 @@ public class ControllerExceptionHandler {
                 return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(EmailException.class)
+    public ResponseEntity<StanderError> email(EmailException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        StanderError err = new StanderError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError(e.getMessage());
+        err.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(status).body(err);
+
+    }
 
 
     }

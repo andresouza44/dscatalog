@@ -7,6 +7,7 @@ import com.andresouza.dscatalog.servicies.exceptions.ResourceNotFoundException;
 import com.andresouza.dscatalog.repositories.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
